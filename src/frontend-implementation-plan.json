@@ -1,0 +1,274 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Real estate listings and rentals MVP (frontend)",
+  "requirements": [
+    {
+      "id": "REQ-4",
+      "summary": "Build responsive listings browse UI with search, filters, pagination, and React Query loading/empty/error states.",
+      "acceptanceCriteria": [
+        "A user can browse listings, apply filters, and move between result pages.",
+        "UI clearly indicates loading and empty results.",
+        "Network errors show a helpful message and allow retry."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the app shell and route wiring for the browse view, including navigation to listing details. Implement basic client-side routing (hash or path-based) and ensure browse is reachable as the default view."
+        },
+        {
+          "path": "frontend/src/pages/BrowseListingsPage.tsx",
+          "operation": "create",
+          "description": "Implement the browse page layout: search bar, filter controls (type, city, price range, bedrooms, property type), results grid/list toggle, and pagination controls. Use shadcn-ui components (e.g., Input, Select, Button, Card, Badge) to compose the UI. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/listings/ListingCard.tsx",
+          "operation": "create",
+          "description": "Add a reusable listing card for grid/list presentation with photo thumbnail (if available), title, price/currency, key facts (beds/baths/area), location, and status. Use shadcn-ui Card/Badge/Button for consistent styling. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/listings/ListingFiltersBar.tsx",
+          "operation": "create",
+          "description": "Add a reusable filters bar component that edits a single filters state object (listingType, city, min/max price, min bedrooms, propertyType, search text) and triggers search. Use shadcn-ui form controls. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useListings.ts",
+          "operation": "create",
+          "description": "Create React Query hooks for fetching paginated listings with filters via the backend actor (getListings). Ensure cache keys include page and filters, and expose retry-friendly error state."
+        },
+        {
+          "path": "frontend/src/lib/formatters.ts",
+          "operation": "create",
+          "description": "Add formatting helpers for price/currency display, compact address display, and bigint-to-number-safe UI formatting (without losing precision in UI where relevant)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Add a listing details page with photo gallery, full listing info, and primary contact/request actions based on listing type.",
+      "acceptanceCriteria": [
+        "Clicking a listing from browse navigates to a dedicated details view.",
+        "Photos render in a simple gallery/carousel layout.",
+        "Rent listings provide a rental request form entry point."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/ListingDetailsPage.tsx",
+          "operation": "create",
+          "description": "Implement listing details view: photo gallery, title, price, address/city, facts (beds/baths/area), amenities, description, and availability status. Show primary actions: “Request rental” for rent listings and “Contact owner” for sale listings."
+        },
+        {
+          "path": "frontend/src/components/listings/ListingPhotoGallery.tsx",
+          "operation": "create",
+          "description": "Create a simple gallery component for listing photos (carousel/lightbox optional) that gracefully handles zero photos. Use shadcn-ui components where appropriate (e.g., Dialog for lightbox). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useListing.ts",
+          "operation": "create",
+          "description": "Create React Query hooks for fetching a listing by id (getListing) with loading/error/empty handling for not-found cases."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the listing details route (e.g., /listing/:id) from the browse listing card navigation, and ensure back navigation to browse works predictably."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Implement Internet Identity sign-in UI and require authentication for restricted actions while keeping browsing public.",
+      "acceptanceCriteria": [
+        "User can sign in/out using Internet Identity.",
+        "Attempting restricted actions while signed out prompts the user to sign in.",
+        "Backend enforces authorization based on caller Principal for owner-only operations."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/auth/LoginButton.tsx",
+          "operation": "create",
+          "description": "Add a login/logout button using the existing Internet Identity hook. On logout, clear React Query cached data. Use shadcn-ui Button styling. Verify the component's usage instructions before implementing. (Selected component: authorization — provides Internet Identity login guidance and cache-clearing requirement.)"
+        },
+        {
+          "path": "frontend/src/components/auth/RequireAuth.tsx",
+          "operation": "create",
+          "description": "Create an auth gate wrapper for restricted UI areas (create/edit/delete listings and creating inquiries). When unauthenticated, show a sign-in prompt (not blocking public browsing). Use shadcn-ui components for the prompt UI. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useUserProfile.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for authorization component profile flows: getCallerUserProfile, saveCallerUserProfile, and getCallerUserRole. Ensure the profile query is enabled only when the actor is ready. (Selected component: authorization — provides user profile setup requirements and query enabling pattern.)"
+        },
+        {
+          "path": "frontend/src/components/auth/ProfileSetupDialog.tsx",
+          "operation": "create",
+          "description": "Implement first-login profile setup (ask for a display name) using getCallerUserProfile/saveCallerUserProfile. Avoid displaying the raw principal id; use the saved name in the UI. Use shadcn-ui Dialog/Input/Button. Verify the component's usage instructions before implementing. (Selected component: authorization — provides profile setup guidance.)"
+        },
+        {
+          "path": "frontend/src/components/layout/AppHeader.tsx",
+          "operation": "create",
+          "description": "Create a shared header with navigation links and include LoginButton plus user name display (from saved profile when authenticated). Use shadcn-ui components for layout primitives where appropriate. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Integrate AppHeader and ProfileSetupDialog into the app shell; apply RequireAuth to restricted routes only (do not block browse/details for guests)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Add authenticated create/edit listing forms and a ‘My listings’ management area with validation and owner-only UI controls.",
+      "acceptanceCriteria": [
+        "Authenticated user can create a listing and see it appear in browse results.",
+        "Authenticated user can edit/delete only their own listings via the UI.",
+        "Forms validate required fields and show inline errors."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/MyListingsPage.tsx",
+          "operation": "create",
+          "description": "Implement an authenticated ‘My listings’ page showing the current user's listings with edit/delete actions. Wrap the page with RequireAuth so guests are prompted to sign in."
+        },
+        {
+          "path": "frontend/src/pages/CreateListingPage.tsx",
+          "operation": "create",
+          "description": "Implement an authenticated ‘Create listing’ page that hosts the listing form and submits via the backend actor (create_listing). Wrap with RequireAuth."
+        },
+        {
+          "path": "frontend/src/pages/EditListingPage.tsx",
+          "operation": "create",
+          "description": "Implement an authenticated ‘Edit listing’ page that loads the listing, verifies ownership in the UI (compare listing.owner with current principal), and submits updates via update_listing."
+        },
+        {
+          "path": "frontend/src/components/listings/ListingForm.tsx",
+          "operation": "create",
+          "description": "Create a reusable listing form component for create/edit with inline validation (required fields, numeric ranges, at least city/title/price/type/property type). Use shadcn-ui form controls and error text styling. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useMyListings.ts",
+          "operation": "create",
+          "description": "Add React Query hooks to fetch the user's listings (by filtering getListings results client-side to owner when needed, or using available backend capabilities), and mutations for create/update/delete that invalidate listings queries after success."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire routes and navigation for ‘My listings’, ‘Create listing’, and ‘Edit listing’, ensuring these routes are guarded by RequireAuth and are reachable from the header navigation."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Implement rental inquiry creation on rent listings plus inquiry management views for requesters and owners with status updates and date validation.",
+      "acceptanceCriteria": [
+        "Requester can submit an inquiry and see its status update in their inquiry list.",
+        "Owner can view inquiries for their listings and accept/reject them.",
+        "UI prevents invalid date ranges and clearly shows current status."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/inquiries/RentalInquiryForm.tsx",
+          "operation": "create",
+          "description": "Create a rental inquiry form (start date, end date, message) with client-side validation (start <= end; required fields) and submit via create_inquiry. Use shadcn-ui inputs/buttons. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/MyInquiriesPage.tsx",
+          "operation": "create",
+          "description": "Implement ‘My inquiries’ for the requester, showing inquiry list with status and key details (listing reference, dates). Support cancelling if the backend supports it via update_inquiry status transition (where applicable)."
+        },
+        {
+          "path": "frontend/src/pages/InquiriesForMyListingsPage.tsx",
+          "operation": "create",
+          "description": "Implement ‘Inquiries for my listings’ for owners: aggregate inquiries across the user's listings (fetch my listings, then fetch inquiries per listing) and provide accept/reject actions via update_inquiry."
+        },
+        {
+          "path": "frontend/src/hooks/useInquiries.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for inquiries: getUserInquiries, getListingInquiries, and mutations for update_inquiry. Ensure mutations invalidate relevant inquiry and listing queries so statuses refresh."
+        },
+        {
+          "path": "frontend/src/pages/ListingDetailsPage.tsx",
+          "operation": "modify",
+          "description": "Integrate RentalInquiryForm into the primary action area for rent listings. Gate submission with RequireAuth (prompt sign-in if needed), while still showing listing details publicly."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire routes for ‘My inquiries’ and ‘Inquiries for my listings’ and ensure these views are guarded by RequireAuth and linked from the header navigation."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Define and apply a distinct, warm real-estate theme (not default blue/purple) across navigation, cards, forms, and buttons.",
+      "acceptanceCriteria": [
+        "Theme is applied consistently across all pages and major components.",
+        "The UI is readable and visually structured on mobile and desktop.",
+        "No blue/purple-dominant default theme is used."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Create global styles and Tailwind CSS variables for a warm neutral theme (e.g., sand/terracotta/charcoal), typography defaults, spacing, and consistent focus/hover states. Ensure the theme applies across header, cards, forms, and buttons."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Adjust Tailwind theme extensions to support the chosen warm palette via CSS variables (and any needed typography defaults), ensuring the app avoids a blue/purple-dominant look."
+        },
+        {
+          "path": "frontend/src/components/layout/AppHeader.tsx",
+          "operation": "modify",
+          "description": "Apply the theme consistently to navigation and header elements using Tailwind classes and shadcn-ui composition. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/listings/ListingCard.tsx",
+          "operation": "modify",
+          "description": "Apply consistent themed styling for cards and badges (status/type) to match the app theme. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "summary": "Add and reference generated static image assets (logo, hero, empty-state) from frontend/public/assets/generated without backend hosting.",
+      "acceptanceCriteria": [
+        "Generated images are present under frontend/public/assets/generated with the specified filenames.",
+        "Frontend references the images via static paths and they render correctly in production builds.",
+        "No backend endpoints are created to host images."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/realty-logo.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated static logo asset at the exact path frontend/public/assets/generated/realty-logo.dim_512x512.png and ensure it is used by the header UI."
+        },
+        {
+          "path": "frontend/public/assets/generated/realty-hero.dim_1600x600.png",
+          "operation": "create",
+          "description": "Add the generated hero asset at the exact path frontend/public/assets/generated/realty-hero.dim_1600x600.png and ensure it is used on the browse page."
+        },
+        {
+          "path": "frontend/public/assets/generated/realty-empty-search.dim_900x600.png",
+          "operation": "create",
+          "description": "Add the generated empty-state asset at the exact path frontend/public/assets/generated/realty-empty-search.dim_900x600.png and ensure it is used when browse results are empty."
+        },
+        {
+          "path": "frontend/src/components/layout/AppHeader.tsx",
+          "operation": "modify",
+          "description": "Reference and render the static logo image from frontend/public/assets/generated/realty-logo.dim_512x512.png in the header."
+        },
+        {
+          "path": "frontend/src/pages/BrowseListingsPage.tsx",
+          "operation": "modify",
+          "description": "Reference and render the hero image from frontend/public/assets/generated/realty-hero.dim_1600x600.png within the browse page layout (no new top-level homepage)."
+        },
+        {
+          "path": "frontend/src/pages/BrowseListingsPage.tsx",
+          "operation": "modify",
+          "description": "Reference and render the empty-state illustration from frontend/public/assets/generated/realty-empty-search.dim_900x600.png when filters return no listings."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-create-a-responsive-frontend-that-lets-users-browse-listings-in-a-grid-list-view-with-search-bar-filter-controls-type-city-price-range-bedrooms-property-type-and-pagination-controls-use-react-query-for-data-fetching-caching-and-show-loading-empty-error-states",
+      "featureTitle": "Create a responsive frontend that lets users browse listings in a grid/list view with: search bar, filter controls (type, city, price range, bedrooms, property type), and pagination controls. Use React Query for data fetching/caching and show loading/empty/error states.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/listings/ListingCard.tsx",
+        "frontend/src/components/listings/ListingFiltersBar.tsx",
+        "frontend/src/lib/formatters.ts",
+        "frontend/src/pages/BrowseListingsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-listing-details-page-showing-photos-title-price-address-city-property-facts-beds-baths-area-amenities-description-and-availability-status-include-clear-primary-actions-contact-request-rental-for-rent-listings-and-contact-owner-for-sale-listings-inquiry-flow-for-rentals-only",
+      "featureTitle": "Add a listing details page showing photos, title, price, address/city, property facts (beds/baths/area), amenities, description, and availability status. Include clear primary actions: “Contact / Request rental” for rent listings and “Contact owner” for sale listings (inquiry flow for rentals only).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/listings/ListingPhotoGallery.tsx",
+        "frontend/src/pages/ListingDetailsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-internet-identity-sign-in-on-the-frontend-and-require-authentication-for-actions-that-create-update-delete-listings-and-create-rental-inquiries-unauthenticated-users-can-still-browse-and-view-listing-details",
+      "featureTitle": "Implement Internet Identity sign-in on the frontend and require authentication for actions that create/update/delete listings and create rental inquiries. Unauthenticated users can still browse and view listing details.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/auth/LoginButton.tsx",
+        "frontend/src/components/auth/ProfileSetupDialog.tsx",
+        "frontend/src/components/auth/RequireAuth.tsx",
+        "frontend/src/components/layout/AppHeader.tsx",
+        "frontend/src/hooks/useUserProfile.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-create-listing-and-my-listings-area-in-the-frontend-for-authenticated-users-including-forms-to-create-edit-listings-and-a-list-view-to-manage-edit-delete-their-own-listings",
+      "featureTitle": "Add a “Create listing” and “My listings” area in the frontend for authenticated users, including forms to create/edit listings and a list view to manage (edit/delete) their own listings.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/listings/ListingForm.tsx",
+        "frontend/src/pages/CreateListingPage.tsx",
+        "frontend/src/pages/EditListingPage.tsx",
+        "frontend/src/pages/MyListingsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-rental-inquiry-flow-in-the-frontend-on-a-rent-listing-provide-a-form-start-date-end-date-message-to-submit-an-inquiry-provide-a-my-inquiries-view-for-requesters-and-an-inquiries-for-my-listings-view-for-listing-owners-with-accept-reject-actions",
+      "featureTitle": "Add a rental inquiry flow in the frontend: on a rent listing, provide a form (start date, end date, message) to submit an inquiry; provide a “My inquiries” view for requesters and an “Inquiries for my listings” view for listing owners with accept/reject actions.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/inquiries/RentalInquiryForm.tsx",
+        "frontend/src/pages/InquiriesForMyListingsPage.tsx",
+        "frontend/src/pages/ListingDetailsPage.tsx",
+        "frontend/src/pages/MyInquiriesPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-define-and-apply-a-coherent-visual-theme-for-the-app-color-palette-typography-spacing-and-component-styling-suitable-for-a-real-estate-marketplace-use-a-distinct-style-avoid-default-look-and-apply-it-consistently-across-navigation-cards-forms-and-buttons",
+      "featureTitle": "Define and apply a coherent visual theme for the app (color palette, typography, spacing, and component styling) suitable for a real estate marketplace. Use a distinct style (avoid default look) and apply it consistently across navigation, cards, forms, and buttons.",
+      "files": [
+        "frontend/src/components/layout/AppHeader.tsx",
+        "frontend/src/components/listings/ListingCard.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-generated-static-image-assets-to-the-frontend-at-frontend-public-assets-generated-and-use-them-in-the-ui-e-g-app-logo-in-header-a-hero-empty-state-illustration-on-the-home-browse-page-do-not-serve-these-images-through-the-backend",
+      "featureTitle": "Add generated static image assets to the frontend at frontend/public/assets/generated and use them in the UI (e.g., app logo in header, a hero/empty-state illustration on the home/browse page). Do not serve these images through the backend.",
+      "files": [
+        "frontend/src/components/layout/AppHeader.tsx",
+        "frontend/src/pages/BrowseListingsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-10"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

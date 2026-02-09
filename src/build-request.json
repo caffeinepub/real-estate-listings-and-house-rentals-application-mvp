@@ -1,0 +1,218 @@
+{
+  "kind": "build_request",
+  "title": "Real estate listings and house rentals application (MVP)",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement backend data models and CRUD APIs for real estate listings, including: listing id, title, description, price (number), currency (string), listing type (sale | rent), address fields (city, neighborhood, street optional), property type (house | apartment | studio | land | other), bedrooms (nat), bathrooms (nat), areaSqm (nat), amenities (array of strings), photos (array of image asset paths/URLs), availability status (available | unavailable), owner Principal, createdAt/updatedAt timestamps.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Je veux créer une application d'annonce immobilières et de location de maisons"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend exposes methods to create, read (by id), list (paged), update (owner-only), and delete (owner-only) listings.",
+        "Listings are stored persistently in canister stable storage (no external DB).",
+        "All backend methods return typed results with clear error cases (e.g., not found, not authorized, validation error)."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Add backend query APIs for browsing/searching listings with filters: listingType (sale/rent), city, minPrice/maxPrice, minBedrooms, propertyType, and simple text search over title/description. Include pagination (page size + cursor or page number).",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Je veux créer une application d'annonce immobilières et de location de maisons"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Frontend can request filtered listing results without downloading all listings.",
+        "Search results are stable and paginated.",
+        "Filter combinations behave predictably (e.g., minPrice <= price <= maxPrice)."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement backend data models and APIs for rental inquiries/requests tied to a listing: inquiry id, listingId, requester Principal, startDate (ISO string), endDate (ISO string), message, status (pending | accepted | rejected), createdAt/updatedAt. Only the listing owner can accept/reject; only the requester can create/cancel their own inquiry.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "application d'annonce immobilières et de location de maisons"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Requester can create an inquiry for a rent-type listing.",
+        "Listing owner can list and act on inquiries for their listings.",
+        "Status transitions are enforced and unauthorized actions are rejected."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Create a responsive frontend that lets users browse listings in a grid/list view with: search bar, filter controls (type, city, price range, bedrooms, property type), and pagination controls. Use React Query for data fetching/caching and show loading/empty/error states.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Je veux créer une application d'annonce immobilières et de location de maisons"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A user can browse listings, apply filters, and move between result pages.",
+        "UI clearly indicates loading and empty results.",
+        "Network errors show a helpful message and allow retry."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Add a listing details page showing photos, title, price, address/city, property facts (beds/baths/area), amenities, description, and availability status. Include clear primary actions: “Contact / Request rental” for rent listings and “Contact owner” for sale listings (inquiry flow for rentals only).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "annonce immobilières et de location de maisons"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Clicking a listing from browse navigates to a dedicated details view.",
+        "Photos render in a simple gallery/carousel layout.",
+        "Rent listings provide a rental request form entry point."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Implement Internet Identity sign-in on the frontend and require authentication for actions that create/update/delete listings and create rental inquiries. Unauthenticated users can still browse and view listing details.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "créer une application d'annonce immobilières"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can sign in/out using Internet Identity.",
+        "Attempting restricted actions while signed out prompts the user to sign in.",
+        "Backend enforces authorization based on caller Principal for owner-only operations."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Add a “Create listing” and “My listings” area in the frontend for authenticated users, including forms to create/edit listings and a list view to manage (edit/delete) their own listings.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "application d'annonce immobilières"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Authenticated user can create a listing and see it appear in browse results.",
+        "Authenticated user can edit/delete only their own listings via the UI.",
+        "Forms validate required fields and show inline errors."
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Add a rental inquiry flow in the frontend: on a rent listing, provide a form (start date, end date, message) to submit an inquiry; provide a “My inquiries” view for requesters and an “Inquiries for my listings” view for listing owners with accept/reject actions.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "location de maisons"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Requester can submit an inquiry and see its status update in their inquiry list.",
+        "Owner can view inquiries for their listings and accept/reject them.",
+        "UI prevents invalid date ranges and clearly shows current status."
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Define and apply a coherent visual theme for the app (color palette, typography, spacing, and component styling) suitable for a real estate marketplace. Use a distinct style (avoid default look) and apply it consistently across navigation, cards, forms, and buttons.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Je veux créer une application d'annonce immobilières et de location de maisons"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Theme is applied consistently across all pages and major components.",
+        "The UI is readable and visually structured on mobile and desktop.",
+        "No blue/purple-dominant default theme is used."
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Add generated static image assets to the frontend at frontend/public/assets/generated and use them in the UI (e.g., app logo in header, a hero/empty-state illustration on the home/browse page). Do not serve these images through the backend.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Je veux créer une application d'annonce immobilières et de location de maisons"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Generated images are present under frontend/public/assets/generated with the specified filenames.",
+        "Frontend references the images via static paths and they render correctly in production builds.",
+        "No backend endpoints are created to host images."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor in backend/main.mo (no additional backend services).",
+    "Do not edit files under frontend/src/components/ui or other immutable paths listed in SYSTEM_CONTEXT; compose them instead.",
+    "No external databases or third-party auth providers; use canister stable storage and Internet Identity only."
+  ],
+  "nonGoals": [
+    "Implementing payments, escrow, or subscription billing.",
+    "Real-time chat or notifications between renters and owners.",
+    "Map/GPS-based location search or embedded map providers.",
+    "Advanced moderation, fraud detection, or admin backoffice beyond basic owner authorization."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Minimal geometric house-and-key logo on a warm neutral background (realty-logo.dim_512x512.png)",
+      "Wide hero illustration of a cozy neighborhood with simple flat shapes, warm palette, no text (realty-hero.dim_1600x600.png)",
+      "Empty-state illustration: a magnifying glass over a small house outline, minimal flat style, no text (realty-empty-search.dim_900x600.png)"
+    ],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [
+      "Use English for any user-facing text in the build request."
+    ],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-09T15:00:07.169Z",
+  "summary": "Diff adds a Motoko backend actor with listing/inquiry data types and a getListings/getListing query (truncated), plus a React/TanStack Router + React Query frontend with browsing UI, auth gating components, theming CSS, and an inquiry form. Several implemented items go beyond the requested MVP (custom access-control/admin secret + user profiles). Some requested backend enum shapes appear to diverge from the spec, and key CRUD/authorization/stable-storage behaviors are not verifiable from the truncated backend diff.",
+  "missing_requirements": [
+    {
+      "id": "REQ-1",
+      "requirement": "Availability status must be (available | unavailable) on listings.",
+      "reason": "Backend defines ListingStatus with additional variants (#sold, #rented, #temporarilyUnavailable) and does not show an explicit #unavailable option as specified.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "Inquiry status must be (pending | accepted | rejected).",
+      "reason": "Backend defines InquiryStatus with an extra #cancelled variant not specified in the requirement.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Admin/role-based access control initialization via a secret token (\"caffeineAdminToken\") and authorization permission checks beyond basic owner-only authorization.",
+      "reason": "BuildRequest only requires owner-only authorization for listing updates/deletes and owner actions on inquiries, using Internet Identity; it does not request an admin token, RBAC system, or secret-based initialization.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/hooks/useActor.ts"
+      ]
+    },
+    {
+      "description": "User profile system (name) with gated profile access and a mandatory profile setup dialog.",
+      "reason": "User profiles are not part of any REQ-1..REQ-10 requirement set for the MVP.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/components/auth/ProfileSetupDialog.tsx",
+        "frontend/src/hooks/useUserProfile.ts"
+      ]
+    },
+    {
+      "description": "Footer credit linking to caffeine.ai and additional branding text.",
+      "reason": "Not requested in the BuildRequest requirements; UI content is extra.",
+      "evidence": [
+        "frontend/src/App.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.6,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/auth/LoginButton.tsx",
+    "frontend/src/components/auth/ProfileSetupDialog.tsx",
+    "frontend/src/components/auth/RequireAuth.tsx",
+    "frontend/src/components/inquiries/RentalInquiryForm.tsx",
+    "frontend/src/components/layout/AppHeader.tsx",
+    "frontend/src/components/listings/ListingCard.tsx",
+    "frontend/src/components/listings/ListingFiltersBar.tsx",
+    "frontend/src/components/listings/ListingForm.tsx",
+    "frontend/src/components/listings/ListingPhotoGallery.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/hooks/useUserProfile.ts",
+    "frontend/src/index.css",
+    "frontend/src/lib/formatters.ts",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/BrowseListingsPage.tsx",
+    "frontend/src/pages/CreateListingPage.tsx",
+    "frontend/src/pages/EditListingPage.tsx",
+    "frontend/src/pages/InquiriesForMyListingsPage.tsx",
+    "frontend/src/pages/ListingDetailsPage.tsx",
+    "frontend/src/pages/MyInquiriesPage.tsx",
+    "frontend/src/pages/MyListingsPage.tsx",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}
